@@ -5,22 +5,23 @@
 const int size = 1000;
 const int numbers_to_show = 50000; 
 
-char* sum(char *a, char *b)
+void sum(unsigned char *a, unsigned char *b)
 {
-    char *c = (char*) malloc(sizeof(char)*size);
-    for(int i=0; i<size ;i++)
+    unsigned int s;
+    unsigned int carry = 0;
+   
+    for(int i = 0; i < size; ++i)
     {
-        char s = a[i] + b[i] + c[i];
-        if(s>9){
-            s-=10;
-            c[i+1]+= 1;
-        }
-        c[i] = s;
+        s = (unsigned int)a[i] + (unsigned int)b[i] + carry;
+
+        carry = s / 10;
+        s %= 10;
+
+        b[i] = (unsigned char)s;
     }
-    return c;
 }
 
-void pfib(char *a, int n)
+void pfib(unsigned char *a, int n)
 {
     printf("\n[%d.]\t", n);
     int x;
@@ -37,15 +38,15 @@ void pfib(char *a, int n)
 	}
 }
 
-void fib(char*a,char*b,int n)
+void fib(unsigned char* a, unsigned char* b, int n)
 {
-    char *c = sum(a,b);
+    sum(a, b);
     //pfib(c,n);
-    if(n<numbers_to_show)
-        fib(b,c, ++n);
+    if (n < numbers_to_show)
+        fib(b , a , ++n);
     else
         //printf("\nTheEnd!\n");
-        pfib(c, n);
+        pfib(b, n);
 }
 
 void rc()
@@ -53,9 +54,9 @@ void rc()
 	printf("reached checkpoint!\n");
 }
 
-char* initialize()
+unsigned char* initialize()
 {
-	char* r = (char*) malloc(sizeof(char)*size);
+	unsigned char* r = (unsigned char*) malloc(sizeof(unsigned char)*size);
 	for(int i=0; i<size;i++)
 		r[i] = 0;
 	r[0] = 1;
@@ -65,12 +66,15 @@ char* initialize()
 int main()
 {
     clock_t begin = clock();
-    char *a,*b; 
+    unsigned char *a,*b; 
 	a = initialize();
 	b = initialize();
 
     fib(a,b,3);
     clock_t end = clock();
     printf("\n%f\n", (float)(end-begin)/CLOCKS_PER_SEC);
+    free(a);
+    free(b);
+
     return 0;
 }
