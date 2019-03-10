@@ -2,22 +2,21 @@
 #include <stdlib.h>
 #include <time.h>
 
-const int size = 1000;
-const int numbers_to_show = 50000; 
+int size =1;
+const int SIZE = 50000;
+const int numbers_to_show = 15; 
+
 
 void sum(unsigned char *a, unsigned char *b)
 {
-    unsigned int s;
-    unsigned int carry = 0;
+    unsigned char s;
+    unsigned char carry = 0;
    
     for(int i = 0; i < size; ++i)
     {
-        s = (unsigned int)a[i] + (unsigned int)b[i] + carry;
-
+        s = a[i] + b[i] + carry;
         carry = s / 10;
-        s %= 10;
-
-        b[i] = (unsigned char)s;
+        b[i] = s%10;
     }
 }
 
@@ -56,8 +55,8 @@ void rc()
 
 unsigned char* initialize()
 {
-	unsigned char* r = (unsigned char*) malloc(sizeof(unsigned char)*size);
-	for(int i=0; i<size;i++)
+	unsigned char* r = (unsigned char*) malloc(sizeof(unsigned char)*SIZE);
+	for(int i=0; i<SIZE;i++)
 		r[i] = 0;
 	r[0] = 1;
 	return r;
